@@ -1,0 +1,505 @@
+  <!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AEO Lab — Управление видимостью бренда в ИИ-поиске</title>
+  <meta name="description" content="Помогаем компаниям контролировать, как ChatGPT, YandexGPT, DeepSeek, Perplexity и другие нейросети видят и рекомендуют ваш бренд.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --text: #111;
+      --text-light: #444;
+      --bg: #fff;
+      --bg-light: #fafafa;
+      --accent: #000;
+      --border: #eee;
+      --font-sans: 'Inter', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, h4 {
+      font-weight: 600;
+      line-height: 1.2;
+    }
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 2rem; margin-top: 3rem; }
+    h3 { font-size: 1.375rem; }
+    p { margin: 1rem 0; }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .container {
+      width: min(100% - 2rem, 1200px);
+      margin-inline: auto;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .hero .tagline {
+      font-size: 1.125rem;
+      color: var(--text-light);
+      margin-bottom: 2rem;
+    }
+
+    .btn {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      padding: 0.75rem 2rem;
+      border-radius: 12px;
+      font-weight: 500;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--accent);
+      color: var(--accent);
+    }
+    .section {
+      padding: 2rem 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2.5rem;
+      margin-top: 2.5rem;
+    }
+    .card {
+      background: var(--bg-light);
+      padding: 2rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .card h3 {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1.25rem;
+      color: var(--text-light);
+    }
+    .card h4 {
+      margin: 1.5rem 0 1rem;
+    }
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 2.5rem;
+    }
+    .step {
+      display: flex;
+      gap: 1rem;
+    }
+    .step-number {
+      flex-shrink: 0;
+      background: var(--accent);
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: grid;
+      place-content: center;
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+    .footer {
+      background: var(--bg-light);
+      padding: 3rem 0;
+      margin-top: 4rem;
+      text-align: center;
+    }
+    .cta {
+      text-align: center;
+      padding: 4rem 0;
+    }
+    .img-placeholder {
+      margin-top: 1rem;
+      background: #eee;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      color: #888;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      background: #e04556;
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      padding: 0.1rem 0.1rem;
+      gap: 0.5rem;
+    }
+    .logo span {
+      width: 1.5rem;
+      display: inline-block;
+    }
+    .nav {
+      display: flex;
+      gap: 2rem;
+      font-size: 0.95rem;
+    }
+    .nav a {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+@keyframes fadeSlide {
+  0%, 100% { opacity: 0; }
+  2.5%, 27.5% { opacity: 1; }
+  30%, 55% { opacity: 0; }
+  57.5%, 82.5% { opacity: 1; }
+  85%, 97.5% { opacity: 0; }
+}
+
+    @media (max-width: 768px) {
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.75rem; }
+      .hero {
+        flex-direction: column;
+        padding: 3rem 1rem;
+        gap: 2rem;
+      }
+      .hero-content {
+        max-width: 100%;
+      }
+      .hero h1 {
+        font-size: 2.25rem;
+      }
+      .hero-btns {
+        flex-direction: column;
+        width: 100%;
+      }
+      .btn {
+        width: 100%;
+        text-align: center;
+      }
+      .section { padding: 3rem 0; }
+      header {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .nav {
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <span>&nbsp;</span>
+      AEO Lab
+    </div>
+    <nav class="nav">
+      <a href="#about">О нас</a>
+      <a href="#services">Услуги</a>
+      <a href="mailto:pk1883@nyu.edu">Контакты</a>
+    </nav>
+  </header>
+
+  <div class="section" style="padding-top: 6rem; padding-bottom: 0rem;">
+    <div class="container">
+      <h1>Увеличьте ваш трафик из ChatGPT в 10 раз</h1>
+      <p class="tagline" style="max-width: 600px; margin-top: 1rem; margin-bottom: 2rem; text-align: left;">
+        Превратите упоминания вашего бренда в  ChatGPT, YandexGPT, DeepSeek, Perplexity и других нейросетях в трафик, лиды и продажи.
+      </p>
+      <a href="mailto:pk1883@nyu.edu" class="btn">Напишите нам</a>
+    </div>
+  </div>
+
+  <div class="section" id="services">
+    <div class="container">
+      <h2>Наши продукты и услуги</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Анализ видимости в нейросетях</h3>
+
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: nowrap; margin-bottom: 1rem; width: min(100%, 340px);">
+        <img src="report_1.png" style="width: 160px; height: 220px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); flex-shrink: 0;">
+        <img src="report_2.png" style="width: 160px; height: 220px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); flex-shrink: 0;">
+        </div> 
+          <p>Первый шаг к управлению ИИ-видимостью – понять, где вы сейчас</p>
+          <h4>Что делаем</h4> 
+
+          <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+          <li>Моделируем запросы</li>
+          <li>Подключаемся к ChatGPT, YandexGPT, DeepSeek, Perplexity по API</li>
+          <li>Получаем точные данные о ваших позициях</li>
+          </ul>
+          </div>
+        <div class="card">
+          <h3>Мониторинг</h3>
+          <img src="monitoring.png" style="width: 100%; max-width: 320px; height: 220px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); display: block; margin: 0 auto;">
+
+          <p>Живая карта изменений в ИИ-поиске</p>
+          <h4>Что делаем</h4> 
+
+          <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+          <li>Отслеживаем изменения в уровне ИИ-видимости</li>
+          <li>Оцениваем влияние ваших действий на ваши позиции</li>
+          </ul>
+
+        </div>
+<div class="card">
+  <h3>Продвижение</h3>
+  <div style="
+    width: 100%;
+    max-width: 320px;
+    height: 220px;
+    position: relative;
+    margin: 0 auto 1rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    background: white;
+    padding: 24px; /* ← увеличен отступ, чтобы оставить место для рамки */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  ">
+    <!-- Обёртка для каждого изображения — белая рамка -->
+    <img src="gpt.png" class="promo-slide" style="
+      width: auto;
+      height: 120px;
+      object-fit: contain;
+      object-position: center;
+      position: absolute;
+      opacity: 1;
+      animation: fadeSlide 40s infinite;
+      background: white;
+      padding: 20px;
+    ">
+    <img src="deepseek.png" class="promo-slide" style="
+      width: auto;
+      height: 120px;
+      object-fit: contain;
+      object-position: center;
+      position: absolute;
+      opacity: 0;
+      animation: fadeSlide 40s infinite 10s;
+      background: white;
+      padding: 20px;
+    ">
+    <img src="gemini.png" class="promo-slide" style="
+      width: auto;
+      height: 120px;
+      object-fit: contain;
+      object-position: center;
+      position: absolute;
+      opacity: 0;
+      animation: fadeSlide 40s infinite 20s;
+      background: white;
+      padding: 20px;
+    ">
+    <img src="perplexity.png" class="promo-slide" style="
+      width: auto;
+      height: 120px;
+      object-fit: contain;
+      object-position: center;
+      position: absolute;
+      opacity: 0;
+      animation: fadeSlide 40s infinite 30s;
+      background: white;
+      padding: 20px;
+    ">
+  </div>
+  
+          <p>Делаем так, чтобы нейросети вас рекомендовали</p>
+          <h4>Что делаем</h4> 
+
+          <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+          <li>Определяем наиболее эффективные конкретные действия, которые дадут результат</li>
+          <li>Сопровождаем: помогаем со стратегией и контентом</li>
+          </ul>
+</div>
+        
+
+        <!-- <div class="card">
+          <h3>R&D-проекты</h3>
+          <p><strong>Проблема:</strong> Упускаете новые ниши, потому что не видите трендов в ИИ-поиске.</p>
+          <p><strong>Механизм:</strong> Анализируем AI Search Volumes, проводим Agent Analytics, отслеживаем исследования, ставим эксперименты.</p>
+          <h4>Результат</h4>
+          <p>Глубокие инсайты о трендах и точках роста категории.</p>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="section">
+    <div class="container">
+      <h2>Как мы работаем</h2>
+      <div class="process-steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div>Знакомство и постановка целей</div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div>Формирование ТЗ: промпты, конкуренты, приоритеты</div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div>Подготовка аналитики и зон роста</div>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div>Совместное обсуждение стратегии</div>
+        </div>
+        <div class="step">
+          <div class="step-number">5</div>
+          <div>Мониторинг динамики выдачи и тональности</div>
+        </div>
+        <div class="step">
+          <div class="step-number">6</div>
+          <div>Продвижение: обновление контента и усиление сигналов</div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+
+  <div class="section">
+  <div class="container">
+    <h2>FAQ</h2>
+    <p style="margin-top: 1rem; color: var(--text-light);">Generative Engine Optimization — новая и загадочная область. Мы проведём вас по ней.</p>
+
+    <div class="faq-container" style="max-width: 800px; margin-top: 3rem;">
+      <!-- Вопрос 1 -->
+      <div class="faq-item" style="border-bottom: 1px solid var(--border); padding: 1.5rem 0;">
+        <button class="faq-toggle" style="display: flex; align-items: center; gap: 1rem; background: none; border: none; cursor: pointer; width: 100%; text-align: left; font-weight: 600; font-size: 1.125rem; color: var(--text);">
+          <span class="faq-icon" style="font-size: 1.5rem; line-height: 1;">+</span>
+          Что нужно сделать, чтобы ChatGPT и другие нейросети упоминали мой бренд?
+        </button>
+        <div class="faq-content" style="margin-top: 1rem; padding-left: 2.5rem; display: none; animation: fadeIn 0.3s ease-in-out;">
+          <p>Упоминание вашего бренда в ChatGPT, YandexGPT, DeepSeek, Perplexity и других нейросетях начинается с того, что вы становитесь авторитетным источником информации для этих моделей.</p>
+          <p> 
+            AEO Lab поможет разобраться, какие источники в вашей отрасли являются авторитетными для ИИ, проанализирует частоту упоминания вашего бренда в их ответах и покажет, какой именно контент 
+            нужно улучшить, чтобы нейросети начали на вас ссылаться.</p>
+      
+        </div>
+      </div>
+
+      <!-- Вопрос 2 -->
+      <div class="faq-item" style="border-bottom: 1px solid var(--border); padding: 1.5rem 0;">
+        <button class="faq-toggle" style="display: flex; align-items: center; gap: 1rem; background: none; border: none; cursor: pointer; width: 100%; text-align: left; font-weight: 600; font-size: 1.125rem; color: var(--text);">
+          <span class="faq-icon" style="font-size: 1.5rem; line-height: 1;">+</span>
+          Чем AEO Lab отличается от других компаний в области ИИ-аналитики и продвижения, а также от SEO-агентств?
+        </button>
+        <div class="faq-content" style="margin-top: 1rem; padding-left: 2.5rem; display: none; animation: fadeIn 0.3s ease-in-out;">
+          <p>AEO Lab фокусируется на действиях, а не на аналитике. 
+            Традиционные SEO-платформы и доступные в настоящий момент инструменты мониторинга ИИ ограничиваются показом того, что говорят ChatGPT или Perplexity о вашем бренде.
+            Мы же помогаем вам влиять на эти результаты. В нашей аналитике мы получаем ответ на вопрос, почему ваши конкуренты
+             упоминаются в выдаче, после чего мы формулируем точные рекомендации, которые повысят вашу видимость в ИИ-выдаче.
+          </p>
+          <p>Наша команда следит за обновлениями моделей и последними лучшими практиками, адаптируясь к эволюции больших языковых моделей. </p>
+        </div>
+      </div>
+
+      <!-- Вопрос 3 -->
+      <div class="faq-item" style="padding: 1.5rem 0;">
+        <button class="faq-toggle" style="display: flex; align-items: center; gap: 1rem; background: none; border: none; cursor: pointer; width: 100%; text-align: left; font-weight: 600; font-size: 1.125rem; color: var(--text);">
+          <span class="faq-icon" style="font-size: 1.5rem; line-height: 1;">+</span>
+          Я хочу, чтобы AEO Lab помогли моему бренду повысить ИИ-видимость. Как нам начать сотрудничать?
+        </button>
+        <div class="faq-content" style="margin-top: 1rem; padding-left: 2.5rem; display: none; animation: fadeIn 0.3s ease-in-out;">
+          <p>Свяжитесь с нами по <b><a href="mailto:pk1883@nyu.edu">почте</a></b> или в <b><a href="https://t.me/pabv13">Telegram</a></b>. 
+            На первом звонке мы уточним ваши цели и желаемый формат работы. Далее — совместно с вашей командой (обычно маркетинг/SEO) 
+            фиксируем кластеры промптов, конкурентов и релевантные параметры. После этого вы получите аналитику («точка А») и 
+            краткие рекомендации по росту (как достичь «точку B»).</p> 
+            <p>Дальше мы продолжаем сотрудничество в формате мониторинга (регулярный анализ динамики вашего положения)
+            и/или продвижения (контент-стратегия, усиление сигналов, реализация конкретных действий для роста ИИ-видимости).</p>
+            <p>Для каждого клиента мы делаем индивидуальное предложение с учётом его целей и задач.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Анимация для плавного появления контента -->
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; max-height: 0; }
+    to { opacity: 1; max-height: 500px; }
+  }
+</style>
+
+<!-- JavaScript для переключения аккордеона -->
+<script>
+  document.querySelectorAll('.faq-toggle').forEach(button => {
+    button.addEventListener('click', () => {
+      const icon = button.querySelector('.faq-icon');
+      const content = button.nextElementSibling;
+
+      // Закрываем все другие открытые элементы
+      document.querySelectorAll('.faq-content').forEach(el => {
+        if (el !== content) {
+          el.style.display = 'none';
+          el.previousElementSibling.querySelector('.faq-icon').textContent = '+';
+        }
+      });
+
+      // Переключаем текущий элемент
+      if (content.style.display === 'block') {
+        content.style.display = 'none';
+        icon.textContent = '+';
+      } else {
+        content.style.display = 'block';
+        icon.textContent = '×';
+      }
+    });
+  });
+</script>
+
+  <div class="cta" id="contact">
+    <div class="container">
+      <h2>Как ИИ-поиск может уже сегодня работать на ваш бренд?</h2>
+      <br>
+      <a href="mailto:pk1883@nyu.edu" class="btn">Узнайте у нас</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p>AEO Lab 2025</p>
+    </div>
+  </footer>
+</body>
+</html>
